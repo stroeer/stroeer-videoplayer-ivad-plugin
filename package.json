@@ -1,5 +1,5 @@
 {
- "version": "0.0.4",
+ "version": "0.0.5",
  "name": "@stroeer/stroeer-videoplayer-ivad-plugin",
  "description": "Ströer Videoplayer Interactive Video Ads Plugin",
  "main": "dist/StroeerVideoplayer-ivad-plugin.cjs.js",
