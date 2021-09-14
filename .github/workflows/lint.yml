@@ -13,4 +13,4 @@ jobs:
     steps:
     - uses: actions/checkout@v2
     - name: Lint
-      run: yarn --dev && yarn lint
+      run: yarn install && yarn run lint

@@ -13,10 +13,10 @@ jobs:
       - uses: actions/setup-node@v1
         with:
           node-version: 15
-      - run: yarn --dev || exit 1
-      - run: yarn lint || exit 2
-      - run: yarn test || exit 3
-      - run: yarn build || exit 4
+      - run: yarn install || exit 1
+      - run: yarn run lint || exit 2
+      - run: yarn run test || exit 3
+      - run: yarn run build || exit 4
       - uses: JS-DevTools/npm-publish@v1
         with:
           token: ${{ secrets.NPM_TOKEN }}
@@ -32,10 +32,10 @@ jobs:
           registry-url: "https://npm.pkg.github.com"
         env:
           NODE_AUTH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-      - run: yarn --dev || exit 1
-      - run: yarn lint || exit 2
-      - run: yarn test || exit 3
-      - run: yarn build || exit 4
+      - run: yarn install || exit 1
+      - run: yarn run lint || exit 2
+      - run: yarn run test || exit 3
+      - run: yarn run build || exit 4
       - name: publish
         env:
           NODE_AUTH_TOKEN: ${{ secrets.GITHUB_TOKEN }}

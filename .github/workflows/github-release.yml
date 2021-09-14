@@ -16,7 +16,7 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v2
       - name: Build project
-        run: yarn --dev || exit 1 && yarn lint || exit 2 && yarn test || exit 3 && yarn build || exit 4 && zip --junk-paths stroeer-videoplayer-${{ steps.get_version.outputs.VERSION }}.zip dist/*.js dist/*.css
+        run: yarn install || exit 1 && yarn run lint || exit 2 && yarn run test || exit 3 && yarn run build || exit 4 && zip --junk-paths stroeer-videoplayer-${{ steps.get_version.outputs.VERSION }}.zip dist/*.js dist/*.css
       - name: Create Release
         id: create_release
         uses: actions/create-release@v1
