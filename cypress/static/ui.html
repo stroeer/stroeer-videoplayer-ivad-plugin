@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<head>
+	<title>Dev</title>
+	<style>
+		html, body {background-color: black;}
+		video {
+			max-width: 100%;
+		}
+		.container {
+			margin: 0 auto;
+			max-width: 776px;
+		}
+	</style>
+</head>
+<body>
+	<div class="container">
+		<video id="myvideo" class="stroeervideoplayer" controls playsinline>
+			<source src="https://evilcdn.net/demo-videos/walialu-44s-testspot-longboarding-240p.mp4" type="video/mp4" data-label="240p" />
+			<source src="https://evilcdn.net/demo-videos/walialu-44s-testspot-longboarding-720p.mp4" type="video/mp4" data-label="720p" />
+			<source src="https://evilcdn.net/demo-videos/walialu-44s-testspot-longboarding-1080p.mp4" type="video/mp4" data-label="1080p" />
+		</video>
+	</div>
+
+	<script src="StroeerVideoplayer.umd.js"></script>
+	<link rel="stylesheet" href="StroeerVideoplayer.css" />
+
+	<script src="StroeerVideoplayer-default-ui.umd.js"></script>
+	<link rel="stylesheet" href="StroeerVideoplayer-default-ui.css" />
+
+	<script src="../../dist/StroeerVideoplayer-plugin-ivad.js"></script>
+
+	<script>
+		StroeerVideoplayer.registerUI(StroeerVideoplayerDefaultUI);
+		const video = document.getElementById("myvideo");
+		video.addEventListener('error', function() {
+			console.log('error', this.error.code, this.error.message)
+		})
+		video.addEventListener('firstPlay', function() {
+			console.log('firstPlay')
+		})
+		video.addEventListener('contentVideoSeeked', function() {
+			console.log('contentVideoSeeked')
+		})
+		video.addEventListener('contentVideoPause', function() {
+			console.log('contentVideoPause')
+		})
+		video.addEventListener('contentVideoResume', function() {
+			console.log('contentVideoResume')
+		})
+		video.addEventListener('contentVideoReplay', function() {
+			console.log('contentVideoReplay')
+		})
+		video.addEventListener('contentVideoStart', function() {
+			console.log('contentVideoStart')
+		})
+		video.addEventListener('contentVideoEnded', function() {
+			console.log('contentVideoEnded')
+		})
+		video.addEventListener('contentVideoFirstQuartile', function() {
+			console.log('contentVideoFirstQuartile')
+		})
+		video.addEventListener('contentVideoMidpoint', function() {
+			console.log('contentVideoMidpoint')
+		})
+		video.addEventListener('contentVideoThirdQuartile', function() {
+			console.log('contentVideoThirdQuartile')
+		})
+		StroeerVideoplayer.setDefaultUIName('default')
+		const myvideoplayer = new StroeerVideoplayer(video);
+	</script>
+</body>
