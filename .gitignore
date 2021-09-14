@@ -3,3 +3,10 @@ tags
 node_modules
 dev.html
 /package-lock.json
+.yarn/*
+!.yarn/cache
+!.yarn/patches
+!.yarn/plugins
+!.yarn/releases
+!.yarn/sdks
+!.yarn/versions
