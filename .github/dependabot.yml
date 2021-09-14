@@ -1,0 +1,15 @@
+version: 2
+updates:
+  - package-ecosystem: "yarn"
+    directory: "/"
+    schedule:
+      interval: "weekly"
+    reviewers:
+      - "stroeer/adhoc"
+    labels:
+      - "dependencies"
+      - "dependabot"
+      - "javascript"
+    commit-message:
+      prefix: "chore"
+      include: "scope"
