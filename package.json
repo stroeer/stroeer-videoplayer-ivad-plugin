@@ -8,9 +8,9 @@
   "dist"
  ],
  "scripts": {
-  "build": "npm-run-all build:*",
+  "build": "npm-run-all 'build:*'",
   "build:js": "rollup -c",
-  "watch": "npm-run-all watch:*",
+  "watch": "npm-run-all 'watch:*'",
   "watch:js": "rollup -c -w",
   "lint": "eslint src/*.ts src/**/*.ts",
   "test": "jest src",
