@@ -18,7 +18,7 @@
  },
  "repository": {
   "type": "git",
-  "url": "git@github.com:stroeer/stroeer-videoplayer-default-ui.git"
+  "url": "git@github.com:stroeer/stroeer-videoplayer-ivad-plugin.git"
  },
  "author": "Marco Kellershoff <marco@kellershoff.net>",
  "license": "MIT",
