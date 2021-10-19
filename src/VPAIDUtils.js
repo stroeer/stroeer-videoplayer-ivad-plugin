@@ -145,6 +145,9 @@ function CreateIframe (url, currentAd, stroeervideoplayer, vastparser, opts) {
 
       function onAdSkipped () {
         Logger.log('VPAIDUtils', 'VPAID Ad skipped')
+        const videoEl = stroeervideoplayer.getVideoEl()
+        videoEl.dispatchEvent(new Event('IVADskip'))
+        videoEl.dispatchEvent(new Event('IVADvpaidSkip'))
         ResumeOrigVideo()
       }
 
