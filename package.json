@@ -1,5 +1,5 @@
 {
- "version": "0.0.7",
+ "version": "0.0.8",
  "name": "@stroeer/stroeer-videoplayer-ivad-plugin",
  "description": "Ströer Videoplayer Interactive Video Ads Plugin",
  "main": "dist/StroeerVideoplayer-ivad-plugin.cjs.js",
@@ -20,6 +20,9 @@
   "type": "git",
   "url": "git@github.com:stroeer/stroeer-videoplayer-ivad-plugin.git"
  },
+ "publishConfig": {
+    "registry":"https://npm.pkg.github.com"
+  },
  "author": "Marco Kellershoff <marco@kellershoff.net>",
  "license": "MIT",
  "devDependencies": {
