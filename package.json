@@ -20,9 +20,6 @@
   "type": "git",
   "url": "git@github.com:stroeer/stroeer-videoplayer-ivad-plugin.git"
  },
- "publishConfig": {
-    "registry":"https://npm.pkg.github.com"
-  },
  "author": "Marco Kellershoff <marco@kellershoff.net>",
  "license": "MIT",
  "devDependencies": {
