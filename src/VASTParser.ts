@@ -440,9 +440,20 @@ class VASTParser {
     fetch(uri)
       .then((res: any) => {
         return res.text()
-      }).then((str: string) => {
+      })
+      .catch(() => {
+        // this should only trigger when
+        // a network error is encountered,
+        // although this usually means permissions issues or similar.
+        this.videoEl.dispatchEvent(eventWrapper('IVADerror', {
+          errorCode: 301,
+          errorMessage: VASTErrorCodesLookup(301)
+        }))
+      })
+      .then((str: string) => {
         return new window.DOMParser().parseFromString(str, 'text/xml')
-      }).then((xmldoc: XMLDocument) => {
+      })
+      .then((xmldoc: XMLDocument) => {
         this._VASTDocuments.push(xmldoc)
         this.parse(xmldoc)
       })
