@@ -9,10 +9,10 @@ jobs:
   npm:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v1
-      - uses: actions/setup-node@v1
+      - uses: actions/checkout@v2
+      - uses: actions/setup-node@v2
         with:
-          node-version: 15
+          node-version: 14
       - run: yarn install || exit 1
       - run: yarn run lint || exit 2
       - run: yarn run test || exit 3
@@ -25,11 +25,12 @@ jobs:
   github:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v1
+      - uses: actions/checkout@v2
       - uses: actions/setup-node@v2
         with:
           node-version: 14
           registry-url: "https://npm.pkg.github.com"
+          scope: '@stroeer'
         env:
           NODE_AUTH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       - run: yarn install || exit 1
