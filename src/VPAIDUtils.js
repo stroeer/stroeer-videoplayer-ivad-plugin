@@ -133,6 +133,7 @@ function CreateIframe (url, currentAd, stroeervideoplayer, vastparser, opts) {
         const videoEl = stroeervideoplayer.getVideoEl()
         const svp = stroeervideoplayer
         svp.setContentVideo()
+        videoEl.removeAttribute('src')
         svp.setSrc(vastparser._originalVideoSource)
         svp.loadStreamSource()
         videoEl.play()

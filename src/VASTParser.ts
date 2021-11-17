@@ -358,6 +358,7 @@ class VASTParser {
           svp.deinitUI('ivad')
           svp.initUI(this._originalUIName)
           svp.setContentVideo()
+          this.videoEl.removeAttribute('src')
           svp.setSrc(this._originalVideoSource)
           svp.loadStreamSource()
           // eslint-disable-next-line
