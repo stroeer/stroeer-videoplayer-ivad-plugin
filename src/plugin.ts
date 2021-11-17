@@ -1,6 +1,7 @@
 import { version } from '../package.json'
 import noop from './noop'
 import VASTParser from './VASTParser'
+import basicBrowserSniffer from './basicBrowserSniffer'
 
 interface IStroeerVideoplayer {
   getUIEl: Function
@@ -29,6 +30,7 @@ class Plugin {
   }
 
   init = (StroeerVideoplayer: IStroeerVideoplayer, opts?: any): void => {
+    if (basicBrowserSniffer() === 'safari/webkit') return
     opts = opts ?? {}
     opts.numRedirects = opts.numRedirects ?? 10
     opts.timeout = opts.timeout ?? 5000
