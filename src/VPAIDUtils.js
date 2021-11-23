@@ -137,7 +137,18 @@ function CreateIframe (url, currentAd, stroeervideoplayer, vastparser, opts) {
         videoEl.load()
         svp.setSrc(vastparser._originalVideoSource)
         svp.loadStreamSource()
-        videoEl.play()
+        videoEl.load()
+        // this seems to fix a bug in safari,
+        // where the video is not playing correctly after the ad is finished
+        // it just shows a black screen with audio
+        // eslint-disable-next-line
+        videoEl.play().then(
+          () => {
+            videoEl.pause()
+            // eslint-disable-next-line
+            videoEl.play()
+          }
+        )
       }
 
       function onVideoComplete () {

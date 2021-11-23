@@ -1,4 +1,3 @@
-import { fetch } from 'whatwg-fetch'
 import noop from './noop'
 import Logger from './Logger'
 import UUID from './UUID'
@@ -362,8 +361,18 @@ class VASTParser {
           this.videoEl.load()
           svp.setSrc(this._originalVideoSource)
           svp.loadStreamSource()
+          this.videoEl.load()
+          // this seems to fix a bug in safari,
+          // where the video is not playing correctly after the ad is finished
+          // it just shows a black screen with audio
           // eslint-disable-next-line
-          this.videoEl.play()
+          this.videoEl.play().then(
+            () => {
+              this.videoEl.pause()
+              // eslint-disable-next-line
+              this.videoEl.play()
+            }
+          )
         }
         this.videoEl.addEventListener('ended', onEndedCleanup)
         const mediaFile = getMediaFileClosestTo(mediaFiles, window.innerWidth)
@@ -439,7 +448,8 @@ class VASTParser {
 
     uri = replaceMacros(uri)
 
-    fetch(uri)
+    // eslint-disable-next-line @typescript-eslint/no-floating-promises
+    window.fetch(uri)
       .then((res: any) => {
         return res.text()
       })
