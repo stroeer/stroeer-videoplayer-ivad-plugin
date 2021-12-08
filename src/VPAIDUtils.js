@@ -125,6 +125,7 @@ function CreateIframe (url, currentAd, stroeervideoplayer, vastparser, opts) {
 
       function onInit () {
         Logger.log('VPAIDUtils', 'VPAID onInit')
+        stroeervideoplayer.getUIEl().querySelector('.controlbar-container').classList.add('hidden')
         VPAIDCreative.startAd()
       }
 
@@ -206,6 +207,9 @@ function CreateIframe (url, currentAd, stroeervideoplayer, vastparser, opts) {
 
       VPAIDCreative.on('AdError', onAdError)
       VPAIDCreative.on('AdLoaded', onInit)
+      VPAIDCreative.on('AdVideoStart', () => {
+        stroeervideoplayer.getUIEl().querySelector('.controlbar-container').classList.remove('hidden')
+      })
       VPAIDCreative.on('AdSkipped', onAdSkipped)
       VPAIDCreative.on('AdStopped', onAdStop)
       VPAIDCreative.on('AdVideoComplete', onVideoComplete)
