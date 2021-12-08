@@ -161,11 +161,19 @@ function CreateIframe (url, currentAd, stroeervideoplayer, vastparser, opts) {
         const videoEl = stroeervideoplayer.getVideoEl()
         videoEl.dispatchEvent(new Event('IVADskip'))
         videoEl.dispatchEvent(new Event('IVADvpaidSkip'))
+        // Kill tracking events
+        vastparser.reset()
+        stroeervideoplayer.deinitUI('ivad')
+        stroeervideoplayer.initUI('default')
         ResumeOrigVideo()
       }
 
       function onAdStop () {
         Logger.log('VPAIDUtils', 'VPAID Ad stop')
+        // Kill tracking events
+        vastparser.reset()
+        stroeervideoplayer.deinitUI('ivad')
+        stroeervideoplayer.initUI('default')
         ResumeOrigVideo()
       }
 
