@@ -1,5 +1,5 @@
 {
- "version": "0.0.13",
+ "version": "0.0.14",
  "name": "@stroeer/stroeer-videoplayer-ivad-plugin",
  "description": "Ströer Videoplayer Interactive Video Ads Plugin",
  "main": "dist/StroeerVideoplayer-ivad-plugin.cjs.js",
@@ -31,8 +31,8 @@
   "@rollup/plugin-node-resolve": "^13.0.4",
   "@rollup/plugin-typescript": "^8.1.0",
   "@stroeer/stroeer-videoplayer": "^0.0.9",
-  "@stroeer/stroeer-videoplayer-default-ui": "^0.0.24",
-  "@stroeer/stroeer-videoplayer-ivad-ui": "^0.0.5",
+  "@stroeer/stroeer-videoplayer-default-ui": "^0.0.32",
+  "@stroeer/stroeer-videoplayer-ivad-ui": "^0.0.12",
   "@superevilmegaco/jest-evil-svg-transformer": "^0.0.4",
   "@types/jest": "^27.0.1",
   "@types/mocha": "^9.0.0",
