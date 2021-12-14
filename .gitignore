@@ -10,3 +10,4 @@ dev.html
 !.yarn/releases
 !.yarn/sdks
 !.yarn/versions
+/deploy.sh

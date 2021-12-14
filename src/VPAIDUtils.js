@@ -165,7 +165,7 @@ function CreateIframe (url, currentAd, stroeervideoplayer, vastparser, opts) {
         // Kill tracking events
         vastparser.reset()
         stroeervideoplayer.deinitUI('ivad')
-        stroeervideoplayer.initUI('default')
+        stroeervideoplayer.initUI(vastparser._originalUIName)
         ResumeOrigVideo()
       }
 
@@ -174,7 +174,7 @@ function CreateIframe (url, currentAd, stroeervideoplayer, vastparser, opts) {
         // Kill tracking events
         vastparser.reset()
         stroeervideoplayer.deinitUI('ivad')
-        stroeervideoplayer.initUI('default')
+        stroeervideoplayer.initUI(vastparser._originalUIName)
         ResumeOrigVideo()
       }
 
@@ -197,7 +197,7 @@ function CreateIframe (url, currentAd, stroeervideoplayer, vastparser, opts) {
         // Kill tracking events
         vastparser.reset()
         stroeervideoplayer.deinitUI('ivad')
-        stroeervideoplayer.initUI('default')
+        stroeervideoplayer.initUI(vastparser._originalUIName)
         ResumeOrigVideo()
       }
 
