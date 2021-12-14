@@ -461,6 +461,9 @@ class VASTParser {
           errorCode: 301,
           errorMessage: VASTErrorCodesLookup(301)
         }))
+        // continue playing the video
+        // eslint-disable-next-line
+        this.videoEl.play()
       })
       .then((str: string) => {
         return new window.DOMParser().parseFromString(str, 'text/xml')
