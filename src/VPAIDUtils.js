@@ -3,6 +3,7 @@ import noop from './noop'
 import VASTErrorCodesLookup from './VASTErrorCodesLookup'
 import eventWrapper from './eventWrapper'
 import createTrackingPixel from './VASTParser/createTrackingPixel'
+import OMIDUtils from './OMIDUtils'
 
 let VPAIDCreative = null
 
@@ -73,7 +74,7 @@ const checkIfrLoaded = function (cw, cb) {
   }
 }
 
-function CreateIframe (url, currentAd, stroeervideoplayer, vastparser, opts) {
+function CreateIframe (url, currentAd, stroeervideoplayer, vastparser, opts, omidParams) {
   const ifr = document.createElement('iframe')
   ifr.href = 'about:blank'
   ifr.setAttribute(
@@ -125,6 +126,10 @@ function CreateIframe (url, currentAd, stroeervideoplayer, vastparser, opts) {
 
       function onInit () {
         Logger.log('VPAIDUtils', 'VPAID onInit')
+        // OMID
+        // Create trackings for all AdVerifcation / OMID Nodes
+        // eslint-disable-next-line
+        new OMIDUtils(omidParams)
         stroeervideoplayer.getUIEl().querySelector('.controlbar-container').classList.add('hidden')
         VPAIDCreative.startAd()
       }
@@ -159,6 +164,8 @@ function CreateIframe (url, currentAd, stroeervideoplayer, vastparser, opts) {
 
       function onAdSkipped () {
         Logger.log('VPAIDUtils', 'VPAID Ad skipped')
+        Logger.log('Event', 'IVADskip')
+        Logger.log('Event', 'IVADvpaidSkip')
         const videoEl = stroeervideoplayer.getVideoEl()
         videoEl.dispatchEvent(new Event('IVADskip'))
         videoEl.dispatchEvent(new Event('IVADvpaidSkip'))
@@ -187,7 +194,15 @@ function CreateIframe (url, currentAd, stroeervideoplayer, vastparser, opts) {
           VASTErrorCodesLookup(errorCode),
           e
         )
-
+        Logger.log(
+          'Event',
+          'adError',
+          {
+            errorCode: errorCode,
+            errorMessage: VASTErrorCodesLookup(errorCode),
+            details: e
+          }
+        )
         stroeervideoplayer.getVideoEl().dispatchEvent(eventWrapper('adError', {
           errorCode: errorCode,
           errorMessage: VASTErrorCodesLookup(errorCode),
@@ -226,6 +241,11 @@ function CreateIframe (url, currentAd, stroeervideoplayer, vastparser, opts) {
             )
             createTrackingPixel(trackingURL)
           })
+          Logger.log(
+            'Event',
+            'IVADclick',
+            clickThruURL
+          )
           stroeervideoplayer.getVideoEl().dispatchEvent(eventWrapper('IVADclick', {
             url: clickThruURL
           }))
@@ -279,9 +299,9 @@ function CreateIframe (url, currentAd, stroeervideoplayer, vastparser, opts) {
   onIframeWriteCb()
 }
 
-function LoadAdUnit (url, currentAd, stroeervideoplayer, vastparser, opts) {
+function LoadAdUnit (url, currentAd, stroeervideoplayer, vastparser, opts, omidParams) {
   Logger.log('VPAIDUtils', 'Loading VPAID URL:', url)
-  CreateIframe(url, currentAd, stroeervideoplayer, vastparser, opts)
+  CreateIframe(url, currentAd, stroeervideoplayer, vastparser, opts, omidParams)
 }
 
 const VPAIDUtils = {

@@ -153,6 +153,7 @@ class VASTParser {
         this.trackingFirstQuartileURIs.forEach((uri: string) => {
           createTrackingPixel(uri)
         })
+        Logger.log('Event', 'IVADfirstQuartile')
         video.dispatchEvent(eventWrapper('IVADfirstQuartile'))
       }
       if ((currentTime >= duration / 2) && !this._trackingMidpointURIsFired) {
@@ -160,6 +161,7 @@ class VASTParser {
         this.trackingMidpointURIs.forEach((uri: string) => {
           createTrackingPixel(uri)
         })
+        Logger.log('Event', 'IVADmidpoint')
         video.dispatchEvent(eventWrapper('IVADmidpoint'))
       }
       if ((currentTime >= duration / 4 * 3) && !this._trackingThirdQuartileURIsFired) {
@@ -167,6 +169,7 @@ class VASTParser {
         this.trackingThirdQuartileURIs.forEach((uri: string) => {
           createTrackingPixel(uri)
         })
+        Logger.log('Event', 'IVADthirdQuartile')
         video.dispatchEvent(eventWrapper('IVADthirdQuartile'))
       }
     }
@@ -177,6 +180,7 @@ class VASTParser {
         this.impressionURIs.forEach((uri: string) => {
           createTrackingPixel(uri)
         })
+        Logger.log('Event', 'IVADimpression')
         this.videoEl.dispatchEvent(eventWrapper('IVADimpression'))
       }
       if (!this._trackingStartURIsFired) {
@@ -184,6 +188,7 @@ class VASTParser {
         this.trackingStartURIs.forEach((uri: string) => {
           createTrackingPixel(uri)
         })
+        Logger.log('Event', 'IVADtrackingStart')
         this.videoEl.dispatchEvent(eventWrapper('IVADtrackingStart'))
       }
       if (!this._trackingCreativeViewURIsFired) {
@@ -191,6 +196,7 @@ class VASTParser {
         this.trackingCreativeViewURIs.forEach((uri: string) => {
           createTrackingPixel(uri)
         })
+        Logger.log('Event', 'IVADtrackingCreativeView')
         this.videoEl.dispatchEvent(eventWrapper('IVADtrackingCreativeView'))
       }
     }
@@ -199,6 +205,7 @@ class VASTParser {
       this.trackingPauseURIs.forEach((uri: string) => {
         createTrackingPixel(uri)
       })
+      Logger.log('Event', 'IVADpause')
       this.videoEl.dispatchEvent(eventWrapper('IVADpause'))
     }
 
@@ -208,6 +215,7 @@ class VASTParser {
         this.trackingMuteURIs.forEach((uri: string) => {
           createTrackingPixel(uri)
         })
+        Logger.log('Event', 'IVADmute')
         this.videoEl.dispatchEvent(eventWrapper('IVADmute'))
       }
     }
@@ -218,6 +226,7 @@ class VASTParser {
         this.trackingUnmuteURIs.forEach((uri: string) => {
           createTrackingPixel(uri)
         })
+        Logger.log('Event', 'IVADunmute')
         this.videoEl.dispatchEvent(eventWrapper('IVADunmute'))
       }
     }
@@ -227,6 +236,7 @@ class VASTParser {
         this.trackingResumeURIs.forEach((uri: string) => {
           createTrackingPixel(uri)
         })
+        Logger.log('Event', 'IVADresume')
         this.videoEl.dispatchEvent(eventWrapper('IVADresume'))
       }
     }
@@ -237,6 +247,7 @@ class VASTParser {
         this.trackingFullscreenURIs.forEach((uri: string) => {
           createTrackingPixel(uri)
         })
+        Logger.log('Event', 'IVADfullscreen')
         this.videoEl.dispatchEvent(eventWrapper('IVADfullscreen'))
       } else {
         if (this._isInFullscreenMode) {
@@ -244,6 +255,7 @@ class VASTParser {
           this.trackingExitFullscreenURIs.forEach((uri: string) => {
             createTrackingPixel(uri)
           })
+          Logger.log('Event', 'IVADexitFullscreen')
           this.videoEl.dispatchEvent(eventWrapper('IVADexitFullscreen'))
         }
       }
@@ -253,6 +265,7 @@ class VASTParser {
       this.trackingCompleteURIs.forEach((uri: string) => {
         createTrackingPixel(uri)
       })
+      Logger.log('Event', 'IVADended')
       this.videoEl.dispatchEvent(eventWrapper('IVADended'))
 
       this.reset()
@@ -342,16 +355,21 @@ class VASTParser {
         svp.initUI('ivad')
         this._addEventHandlers()
 
-        // Create trackings for all AdVerifcation / OMID Nodes
-        // eslint-disable-next-line
-        new OMIDUtils({
+        // OMID Params
+        const omidParams = {
           adSessionID: this.adSessionID,
           verificationResources: this.adVerifications,
           videoEl: this.videoEl,
           player: this._StroeerVideoplayer
-        })
+        }
 
         const onEndedCleanup = (): void => {
+          // This causes the content video to NOT play indefinitely,
+          // when an aderror is caused by a VPAID ad.
+          if (svp.getDataStore().isContentVideo === true) {
+            this.videoEl.removeEventListener('ended', onEndedCleanup)
+            return
+          }
           this.videoEl.removeEventListener('ended', onEndedCleanup)
           this._removeEventHandlers()
           svp.deinitUI('ivad')
@@ -384,7 +402,8 @@ class VASTParser {
             this,
             {
               clickTrackings: this.clickTrackingURIs
-            }
+            },
+            omidParams
           )
           // hide touchclick element, if available
           const touchClickEl = this._StroeerVideoplayer.getRootEl().querySelector('.video-overlay-touchclick')
@@ -392,6 +411,9 @@ class VASTParser {
             touchClickEl.classList.add('hidden')
           }
         } else { // normal mp4 or whatever
+          // Create trackings for all AdVerifcation / OMID Nodes
+          // eslint-disable-next-line
+          new OMIDUtils(omidParams)
           const clickThroughURL = getNodeValue(xmldoc.getElementsByTagName('ClickThrough')[0])
           let clickThroughClassName = 'video-overlay'
           const touchClickEl = this._StroeerVideoplayer.getRootEl().querySelector('.video-overlay-touchclick')
@@ -406,10 +428,10 @@ class VASTParser {
               evt.preventDefault()
               return
             }
+            Logger.log('Event', 'IVADclick', clickThroughURL)
             this.videoEl.dispatchEvent(eventWrapper('IVADclick', {
               url: clickThroughURL
             }))
-            Logger.log('VASTParser ClickThrough URL clicked', clickThroughURL)
             this.clickTrackingURIs.forEach((uri: string) => {
               createTrackingPixel(uri)
             })
@@ -427,6 +449,10 @@ class VASTParser {
         this.errorURIs.forEach((uri: string) => {
           createErrorTrackingPixel(uri, 303)
         })
+        Logger.log('Event', 'IVADerror', {
+          errorCode: 303,
+          errorMessage: VASTErrorCodesLookup(303)
+        })
         this.videoEl.dispatchEvent(eventWrapper('IVADerror', {
           errorCode: 303,
           errorMessage: VASTErrorCodesLookup(303)
@@ -440,10 +466,11 @@ class VASTParser {
     }
 
     Logger.log(this)
-    this._VASTDocuments.forEach((xmldoc) => { Logger.log(xmldoc) })
+    this._VASTDocuments.forEach((xmldoc) => { Logger.log('XML-Doc is', xmldoc) })
   }
 
   read (uri: string): void {
+    Logger.log('VAST URI is', uri)
     this._VASTAdTagURIChain.push(uri)
 
     uri = replaceMacros(uri)
@@ -457,6 +484,10 @@ class VASTParser {
         // this should only trigger when
         // a network error is encountered,
         // although this usually means permissions issues or similar.
+        Logger.log('Event', 'IVADerror', {
+          errorCode: 301,
+          errorMessage: VASTErrorCodesLookup(301)
+        })
         this.videoEl.dispatchEvent(eventWrapper('IVADerror', {
           errorCode: 301,
           errorMessage: VASTErrorCodesLookup(301)
