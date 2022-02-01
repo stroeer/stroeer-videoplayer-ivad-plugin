@@ -1,6 +1,5 @@
 import Logger from './Logger'
 import noop from './noop'
-import VASTErrorCodesLookup from './VASTErrorCodesLookup'
 import eventWrapper from './eventWrapper'
 import createTrackingPixel from './VASTParser/createTrackingPixel'
 import OMIDUtils from './OMIDUtils'
@@ -185,28 +184,19 @@ function CreateIframe (url, currentAd, stroeervideoplayer, vastparser, opts, omi
         ResumeOrigVideo()
       }
 
-      function onAdError (e) {
-        Logger.log('error', 'VPAIDUtils', 'VPAID onAdError:', e)
+      function onAdError (errorMessage) {
         const errorCode = 405
         Logger.log(
-          'error',
-          'VPAIDUtils',
-          VASTErrorCodesLookup(errorCode),
-          e
-        )
-        Logger.log(
           'Event',
-          'adError',
+          'IVADerror',
           {
             errorCode: errorCode,
-            errorMessage: VASTErrorCodesLookup(errorCode),
-            details: e
+            errorMessage: errorMessage
           }
         )
-        stroeervideoplayer.getVideoEl().dispatchEvent(eventWrapper('adError', {
+        stroeervideoplayer.getVideoEl().dispatchEvent(eventWrapper('IVADerror', {
           errorCode: errorCode,
-          errorMessage: VASTErrorCodesLookup(errorCode),
-          details: e
+          errorMessage: errorMessage
         }))
 
         // Kill tracking events

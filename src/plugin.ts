@@ -43,6 +43,7 @@ class Plugin {
         videoEl.removeEventListener('play', this.onVideoElPlay)
 
         const vastParser = new VASTParser(StroeerVideoplayer)
+        videoEl.dispatchEvent(new CustomEvent('IVADadcall'))
         vastParser.read(prerollAdTag)
       }
     }
