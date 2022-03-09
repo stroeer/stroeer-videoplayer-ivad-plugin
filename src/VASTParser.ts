@@ -104,7 +104,13 @@ class VASTParser {
     this.videoEl = StroeerVideoplayer.getVideoEl()
     const playerHls = StroeerVideoplayer.getHls()
     if (playerHls !== null) {
-      this._originalVideoSource = playerHls.url
+      if (playerHls.url !== null) {
+        this._originalVideoSource = playerHls.url
+      } else {
+        // workaround for ie11 and all the browsers that do not support currentSrc
+        // @ts-expect-error
+        this._originalVideoSource = this.videoEl.currentSrc ?? this.videoEl.querySelector('source').src
+      }
     } else {
       // workaround for ie11 and all the browsers that do not support currentSrc
       // @ts-expect-error
@@ -480,6 +486,11 @@ class VASTParser {
       .then((res: any) => {
         return res.text()
       })
+      .then((str: string) => {
+        const xmldoc: XMLDocument = new window.DOMParser().parseFromString(str, 'text/xml')
+        this._VASTDocuments.push(xmldoc)
+        this.parse(xmldoc)
+      })
       .catch(() => {
         // this should only trigger when
         // a network error is encountered,
@@ -495,13 +506,6 @@ class VASTParser {
         // continue playing the video
         // eslint-disable-next-line
         this.videoEl.play()
-      })
-      .then((str: string) => {
-        return new window.DOMParser().parseFromString(str, 'text/xml')
-      })
-      .then((xmldoc: XMLDocument) => {
-        this._VASTDocuments.push(xmldoc)
-        this.parse(xmldoc)
       })
   }
 }
