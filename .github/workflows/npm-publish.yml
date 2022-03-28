@@ -7,33 +7,35 @@ name: Publish to NPM
 
 jobs:
   npm:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-20.04
     steps:
-      - uses: actions/checkout@v2
-      - uses: actions/setup-node@v2
+      - uses: actions/checkout@v3
+      - uses: actions/setup-node@v3
         with:
-          node-version: 14
-      - run: yarn install || exit 1
+          node-version: 16
+          registry-url: 'https://registry.npmjs.org'
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      - run: yarn install --frozen-lockfile || exit 1
       - run: yarn run lint || exit 2
       - run: yarn run test || exit 3
       - run: yarn run build || exit 4
-      - uses: JS-DevTools/npm-publish@v1
-        with:
-          token: ${{ secrets.NPM_TOKEN }}
-          access: public
+      - name: publish
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
+        run: npm publish
 
   github:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-20.04
     steps:
-      - uses: actions/checkout@v2
-      - uses: actions/setup-node@v2
+      - uses: actions/checkout@v3
+      - uses: actions/setup-node@v3
         with:
-          node-version: 14
+          node-version: 16
           registry-url: "https://npm.pkg.github.com"
-          scope: '@stroeer'
         env:
           NODE_AUTH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-      - run: yarn install || exit 1
+      - run: yarn install --frozen-lockfile || exit 1
       - run: yarn run lint || exit 2
       - run: yarn run test || exit 3
       - run: yarn run build || exit 4
