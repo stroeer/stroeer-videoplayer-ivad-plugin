@@ -482,7 +482,7 @@ class VASTParser {
     uri = replaceMacros(uri)
 
     // eslint-disable-next-line @typescript-eslint/no-floating-promises
-    window.fetch(uri)
+    window.fetch(uri, { credentials: 'include' })
       .then((res: any) => {
         return res.text()
       })
