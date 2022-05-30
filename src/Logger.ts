@@ -7,7 +7,7 @@ if (typeof window !== 'undefined' && typeof window.localStorage !== 'undefined')
 const Logger = {
   log: function (...args: any[]) {
     if (debugMode) {
-      args.unshift('stroeer-videoplayer-ivad-plugin')
+      args.unshift('StroeerVideoplayer.plugin.IVAD')
       console.log.apply(console, args)
     }
   }

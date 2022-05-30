@@ -1,6 +1,9 @@
 import { version } from '../package.json'
 import noop from './noop'
 import VASTParser from './VASTParser'
+import eventWrapper from './eventWrapper'
+import VASTErrorCodesLookup from './VASTErrorCodesLookup'
+import Logger from './Logger'
 
 interface IStroeerVideoplayer {
   getUIEl: Function
@@ -34,17 +37,29 @@ class Plugin {
     opts.timeout = opts.timeout ?? 5000
     opts.adLabel = opts.adLabel ?? 'Advertisment ends in {{seconds}} seconds'
 
+    Logger.log('version', this.version)
+
     const videoEl = StroeerVideoplayer.getVideoEl()
 
     this.onVideoElPlay = () => {
       const prerollAdTag = videoEl.getAttribute('data-ivad-preroll-adtag')
       if (prerollAdTag !== null) {
-        videoEl.pause()
         videoEl.removeEventListener('play', this.onVideoElPlay)
-
-        const vastParser = new VASTParser(StroeerVideoplayer)
-        videoEl.dispatchEvent(new CustomEvent('IVADadcall'))
-        vastParser.read(prerollAdTag)
+        if (prerollAdTag === 'adblocked') {
+          videoEl.dispatchEvent(eventWrapper('IVADerror', {
+            errorCode: 303,
+            errorMessage: VASTErrorCodesLookup(303)
+          }))
+          Logger.log('event', 'IVADerror', {
+            errorCode: 301,
+            errorMessage: VASTErrorCodesLookup(301)
+          })
+        } else {
+          videoEl.pause()
+          const vastParser = new VASTParser(StroeerVideoplayer)
+          videoEl.dispatchEvent(new CustomEvent('IVADadcall'))
+          vastParser.read(prerollAdTag)
+        }
       }
     }
 
