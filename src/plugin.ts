@@ -47,8 +47,8 @@ class Plugin {
         videoEl.removeEventListener('play', this.onVideoElPlay)
         if (prerollAdTag === 'adblocked') {
           videoEl.dispatchEvent(eventWrapper('IVADerror', {
-            errorCode: 303,
-            errorMessage: VASTErrorCodesLookup(303)
+            errorCode: 301,
+            errorMessage: VASTErrorCodesLookup(301)
           }))
           Logger.log('event', 'IVADerror', {
             errorCode: 301,
