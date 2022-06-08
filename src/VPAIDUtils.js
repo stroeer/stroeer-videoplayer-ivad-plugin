@@ -96,7 +96,6 @@ function CreateIframe (url, currentAd, stroeervideoplayer, vastparser, opts, omi
       Logger.log('VPAIDUtils', 'VPAID is', VPAIDCreative)
       Logger.log('VPAIDUtils', 'VPAID currentAd', currentAd)
       const videoEl = stroeervideoplayer.getVideoEl()
-      // const origVideoSrc = videoEl.currentSrc ?? videoEl.querySelector('source').src
 
       function _onfullscreenchange (evt) {
         Logger.log('VPAIDUtils', 'fullscreenchange', evt)
@@ -118,6 +117,13 @@ function CreateIframe (url, currentAd, stroeervideoplayer, vastparser, opts, omi
       window.addEventListener('orientationchange', _onorientationchange)
 
       function _cleanupListeners () {
+        VPAIDCreative.off('AdError', onAdError)
+        VPAIDCreative.off('AdLoaded', onInit)
+        VPAIDCreative.off('AdVideoStart', onAdVideoStart)
+        VPAIDCreative.off('AdSkipped', onAdSkipped)
+        VPAIDCreative.off('AdStopped', onAdStop)
+        VPAIDCreative.off('AdVideoComplete', onVideoComplete)
+        VPAIDCreative.off('AdClickThru', onAdClickThru)
         stroeervideoplayer.getRootEl()
           .removeEventListener('fullscreenchange', _onfullscreenchange)
         window.removeEventListener('orientationchange', _onorientationchange)
@@ -158,6 +164,9 @@ function CreateIframe (url, currentAd, stroeervideoplayer, vastparser, opts, omi
 
       function onVideoComplete () {
         Logger.log('VPAIDUtils', 'VPAID onVideoComplete')
+        vastparser.reset()
+        stroeervideoplayer.deinitUI('ivad')
+        stroeervideoplayer.initUI(vastparser._originalUIName)
         ResumeOrigVideo()
       }
 
@@ -206,44 +215,49 @@ function CreateIframe (url, currentAd, stroeervideoplayer, vastparser, opts, omi
         ResumeOrigVideo()
       }
 
+      function onAdClickThru (url, id, playerHandles) {
+        Logger.log('VPAID', 'AdClickThru')
+        opts.clickTrackings.forEach(trackingURL => {
+          Logger.log(
+            'VPAIDUtils',
+            'Event',
+            'ClickThru ClickTracking',
+            trackingURL
+          )
+          createTrackingPixel(trackingURL)
+        })
+        Logger.log(
+          'Event',
+          'IVADclick',
+          url
+        )
+        stroeervideoplayer.getVideoEl().dispatchEvent(eventWrapper('IVADclick', {
+          url: url
+        }))
+        if (playerHandles) {
+          window.open(url)
+        }
+      }
+
+      function onAdVideoStart () {
+        stroeervideoplayer.getUIEl().querySelector('.controlbar-container').classList.remove('hidden')
+      }
+
+      VPAIDCreative.off = function (n, cb) {
+        this.unsubscribe(cb, n)
+      }
+
       VPAIDCreative.on = function (n, cb) {
         this.subscribe(cb, n)
       }
 
       VPAIDCreative.on('AdError', onAdError)
       VPAIDCreative.on('AdLoaded', onInit)
-      VPAIDCreative.on('AdVideoStart', () => {
-        stroeervideoplayer.getUIEl().querySelector('.controlbar-container').classList.remove('hidden')
-      })
+      VPAIDCreative.on('AdVideoStart', onAdVideoStart)
       VPAIDCreative.on('AdSkipped', onAdSkipped)
       VPAIDCreative.on('AdStopped', onAdStop)
       VPAIDCreative.on('AdVideoComplete', onVideoComplete)
-      VPAIDCreative.on(
-        'AdClickThru',
-        (clickThruURL, _, clickThruPlayerHandles) => {
-          Logger.log('VPAID', 'AdClickThru')
-          opts.clickTrackings.forEach(trackingURL => {
-            Logger.log(
-              'VPAIDUtils',
-              'Event',
-              'ClickThru ClickTracking',
-              trackingURL
-            )
-            createTrackingPixel(trackingURL)
-          })
-          Logger.log(
-            'Event',
-            'IVADclick',
-            clickThruURL
-          )
-          stroeervideoplayer.getVideoEl().dispatchEvent(eventWrapper('IVADclick', {
-            url: clickThruURL
-          }))
-          if (clickThruPlayerHandles) {
-            window.open(clickThruURL)
-          }
-        }
-      )
+      VPAIDCreative.on('AdClickThru', onAdClickThru)
 
       let adParamsTxt = ''
       const adParamsNode = currentAd.querySelector('AdParameters')
