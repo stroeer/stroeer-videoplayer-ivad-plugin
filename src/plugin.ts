@@ -17,14 +17,12 @@ interface IStroeerVideoplayer {
 }
 
 class Plugin {
-  version: string
-  pluginName: string
+  public static version: string = version
+  public static pluginName: string = 'ivad'
   onVideoElPlay: Function
   onVideoElContentVideoEnded: Function
 
   constructor () {
-    this.version = version
-    this.pluginName = 'ivad'
     this.onVideoElPlay = noop
     this.onVideoElContentVideoEnded = noop
 
@@ -37,9 +35,10 @@ class Plugin {
     opts.timeout = opts.timeout ?? 5000
     opts.adLabel = opts.adLabel ?? 'Advertisment ends in {{seconds}} seconds'
 
-    Logger.log('version', this.version)
+    Logger.log('version', Plugin.version)
 
     const videoEl = StroeerVideoplayer.getVideoEl()
+    console.log('videoEl', videoEl)
 
     this.onVideoElPlay = () => {
       const prerollAdTag = videoEl.getAttribute('data-ivad-preroll-adtag')
@@ -78,15 +77,4 @@ class Plugin {
   }
 }
 
-const pluginWrap = {
-  version: version,
-  pluginName: 'ivad',
-  init: (StroeerVideoplayer: IStroeerVideoplayer, opts?: any) => {
-    const plugin = new Plugin()
-    plugin.init(StroeerVideoplayer, opts)
-  },
-  deinit: (StroeerVideoplayer: IStroeerVideoplayer, opts?: any) => {
-  }
-}
-
-export default pluginWrap
+export default Plugin
