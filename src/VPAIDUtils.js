@@ -164,6 +164,8 @@ function CreateIframe (url, currentAd, stroeervideoplayer, vastparser, opts, omi
 
       function onVideoComplete () {
         Logger.log('VPAIDUtils', 'VPAID onVideoComplete')
+        const videoEl = stroeervideoplayer.getVideoEl()
+        videoEl.dispatchEvent(new Event('beforeSlotRemoval'))
         vastparser.reset()
         stroeervideoplayer.deinitUI('ivad')
         stroeervideoplayer.initUI(vastparser._originalUIName)
@@ -175,6 +177,7 @@ function CreateIframe (url, currentAd, stroeervideoplayer, vastparser, opts, omi
         Logger.log('Event', 'IVADskip')
         Logger.log('Event', 'IVADvpaidSkip')
         const videoEl = stroeervideoplayer.getVideoEl()
+        videoEl.dispatchEvent(new Event('beforeSlotRemoval'))
         videoEl.dispatchEvent(new Event('IVADskip'))
         videoEl.dispatchEvent(new Event('IVADvpaidSkip'))
         // Kill tracking events
@@ -186,6 +189,8 @@ function CreateIframe (url, currentAd, stroeervideoplayer, vastparser, opts, omi
 
       function onAdStop () {
         Logger.log('VPAIDUtils', 'VPAID Ad stop')
+        const videoEl = stroeervideoplayer.getVideoEl()
+        videoEl.dispatchEvent(new Event('beforeSlotRemoval'))
         // Kill tracking events
         vastparser.reset()
         stroeervideoplayer.deinitUI('ivad')
@@ -207,6 +212,9 @@ function CreateIframe (url, currentAd, stroeervideoplayer, vastparser, opts, omi
           errorCode: errorCode,
           errorMessage: errorMessage
         }))
+
+        const videoEl = stroeervideoplayer.getVideoEl()
+        videoEl.dispatchEvent(new Event('beforeSlotRemoval'))
 
         // Kill tracking events
         vastparser.reset()
