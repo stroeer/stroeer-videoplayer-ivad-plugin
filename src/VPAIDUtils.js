@@ -166,6 +166,10 @@ function CreateIframe (url, currentAd, stroeervideoplayer, vastparser, opts, omi
         Logger.log('VPAIDUtils', 'VPAID onVideoComplete')
         const videoEl = stroeervideoplayer.getVideoEl()
         videoEl.dispatchEvent(new Event('beforeSlotRemoval'))
+        if (!VPAIDCreative.videoElEndedHasFired) {
+          VPAIDCreative.videoElEndedHasFired = true
+          videoEl.dispatchEvent(new Event('ended'))
+        }
         vastparser.reset()
         stroeervideoplayer.deinitUI('ivad')
         stroeervideoplayer.initUI(vastparser._originalUIName)
@@ -258,6 +262,12 @@ function CreateIframe (url, currentAd, stroeervideoplayer, vastparser, opts, omi
       VPAIDCreative.on = function (n, cb) {
         this.subscribe(cb, n)
       }
+
+      VPAIDCreative.videoElEndedHasFired = false;
+
+      stroeervideoplayer.getVideoEl().addEventListener('ended', () => {
+        VPAIDCreative.videoElEndedHasFired = true
+      })
 
       VPAIDCreative.on('AdError', onAdError)
       VPAIDCreative.on('AdLoaded', onInit)
