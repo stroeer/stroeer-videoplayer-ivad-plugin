@@ -12,6 +12,7 @@ const getMediaFilesArray = (mediaFiles: any): any => {
   const mediaFilesArray = []
   for (let i = 0; i < mediaFiles.length; i++) {
     const mediaFileNode = mediaFiles[i]
+    if (mediaFileNode.getAttribute('type') !== 'video/mp4') continue
     mediaFilesArray.push({
       width: mediaFileNode.getAttribute('width'),
       src: getNodeValue(mediaFileNode)
