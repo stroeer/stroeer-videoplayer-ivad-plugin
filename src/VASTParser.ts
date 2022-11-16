@@ -399,7 +399,6 @@ class VASTParser {
           )
         }
         this.videoEl.addEventListener('ended', onEndedCleanup)
-        const mediaFile = getMediaFileClosestTo(mediaFiles, window.innerWidth)
         if (mediaFiles[0].getAttribute('apiFramework') === 'VPAID') {
           VPAIDUtils.LoadAdUnit(
             getNodeValue(mediaFiles[0]),
@@ -420,6 +419,7 @@ class VASTParser {
           // Create trackings for all AdVerifcation / OMID Nodes
           // eslint-disable-next-line
           new OMIDUtils(omidParams)
+          const mediaFile = getMediaFileClosestTo(mediaFiles, window.innerWidth)
           const clickThroughURL = getNodeValue(xmldoc.getElementsByTagName('ClickThrough')[0])
           let clickThroughClassName = 'video-overlay'
           const touchClickEl = this._StroeerVideoplayer.getRootEl().querySelector('.video-overlay-touchclick')
