@@ -761,22 +761,22 @@
   dependencies:
     "@sinonjs/commons" "^1.7.0"
 
-"@stroeer/stroeer-videoplayer-default-ui@1.0.0":
-  version "1.0.0"
-  resolved "https://registry.yarnpkg.com/@stroeer/stroeer-videoplayer-default-ui/-/stroeer-videoplayer-default-ui-1.0.0.tgz#1d08db7c0adf3bc9b52e74a646d6b2f341dcc601"
-  integrity sha512-mziLcg/IXsZTrQdG960KUgpO6oaq1UR15de4I1rruVuvSzYAg/3TUCvnoo+fgxGCaky2MpuTEqTqjUfRfi3TIg==
+"@stroeer/stroeer-videoplayer-default-ui@^3.1.0":
+  version "3.1.0"
+  resolved "https://registry.yarnpkg.com/@stroeer/stroeer-videoplayer-default-ui/-/stroeer-videoplayer-default-ui-3.1.0.tgz#4a8ad946dec60c8d762fe219a8576c250be0b0db"
+  integrity sha512-BRp6D3sWlIasQmX3MO1UdYKMkT3RqysoEyjOwbZ1DkcxFkbS5FqRyJBw390k/SvULhECP0H+1ofyRNcTndE5eg==
 
 "@stroeer/stroeer-videoplayer-ivad-ui@1.0.0":
   version "1.0.0"
   resolved "https://registry.yarnpkg.com/@stroeer/stroeer-videoplayer-ivad-ui/-/stroeer-videoplayer-ivad-ui-1.0.0.tgz#b2ae81897f4f8fe0109929a6cd75b2d46a753b39"
   integrity sha512-kRmtJ9ZJ8w2pa2NdICTQgbNE/7vS/hwhMZqRmTPvBVoivODw7GieBSIsNj9q1mNOB3D5x9O/Wg6IggbRfWbQyg==
 
-"@stroeer/stroeer-videoplayer@1.0.1":
-  version "1.0.1"
-  resolved "https://registry.yarnpkg.com/@stroeer/stroeer-videoplayer/-/stroeer-videoplayer-1.0.1.tgz#df318af37c85922107eadf6bc5481f33bdf2d262"
-  integrity sha512-IA3D/DNBQELGo7RxBIXrFbOILD7mxNMMGOlXBfOTNxMVd3twCrgHoxAfX/TlGfCRxuBcASejNQYGKpegK43Lig==
+"@stroeer/stroeer-videoplayer@^2.0.1":
+  version "2.0.1"
+  resolved "https://registry.yarnpkg.com/@stroeer/stroeer-videoplayer/-/stroeer-videoplayer-2.0.1.tgz#43cdfb657421f9e76aff440dc671b480bbb57628"
+  integrity sha512-hkr8xknHQKi1oxN9Hwx7JgKvtxGNZgn833DwZAX7uhJF/zJdQspkaTOTGnA7QrIRhkiVoYvIGcbpkQx3zDRdXw==
   dependencies:
-    hls.js "1.1.5"
+    hls.js "1.2.4"
 
 "@superevilmegaco/jest-evil-svg-transformer@0.0.4":
   version "0.0.4"
@@ -2762,10 +2762,10 @@ has@^1.0.3:
   dependencies:
     function-bind "^1.1.1"
 
-hls.js@1.1.5:
-  version "1.1.5"
-  resolved "https://registry.npmjs.org/hls.js/-/hls.js-1.1.5.tgz"
-  integrity sha512-mQX5TSNtJEzGo5HPpvcQgCu+BWoKDQM6YYtg/KbgWkmVAcqOCvSTi0SuqG2ZJLXxIzdnFcKU2z7Mrw/YQWhPOA==
+hls.js@1.2.4:
+  version "1.2.4"
+  resolved "https://registry.yarnpkg.com/hls.js/-/hls.js-1.2.4.tgz#761d7f700c3da5c1701257c24c1db7ababea14eb"
+  integrity sha512-yC3K79Kzq1W+OgjT12JxKMDXv9DbfvulppxmPBl7D04SaTyd2IwWk5eNASQV1mUaPlKbjr16yI9292qpSGo0ig==
 
 hosted-git-info@^2.1.4:
   version "2.8.9"
