@@ -385,7 +385,9 @@ class VASTParser {
           this.videoEl.load()
           svp.setSrc(this._originalVideoSource)
           svp.loadStreamSource()
-          svp.getHls().startLoad()
+          if (svp.getHls() !== null) {
+            svp.getHls().startLoad()
+          }
           this.videoEl.load()
           // this seems to fix a bug in safari,
           // where the video is not playing correctly after the ad is finished
@@ -467,7 +469,9 @@ class VASTParser {
         svp.setContentVideo()
         svp.setSrc(this._originalVideoSource)
         svp.loadStreamSource()
-        svp.getHls().startLoad()
+        if (svp.getHls() !== null) {
+          svp.getHls().startLoad()
+        }
         // eslint-disable-next-line
         this.videoEl.play()
       }
