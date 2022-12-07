@@ -14,6 +14,7 @@ interface IStroeerVideoplayer {
   setContentVideo: Function
   initUI: Function
   deinitUI: Function
+  getDataStore: Function
 }
 
 class Plugin {
@@ -64,6 +65,28 @@ class Plugin {
 
     this.onVideoElContentVideoEnded = () => {
       videoEl.addEventListener('play', this.onVideoElPlay)
+    }
+
+    const onVisibilityChangeCallback = (): void => {
+      if (document.hidden) {
+        if (videoEl.paused === false && StroeerVideoplayer.getDataStore().contentVideoStarted !== true) {
+          videoEl.setAttribute('data-was-playing-on-tab-leave', true)
+          videoEl.pause()
+        }
+      } else {
+        if (videoEl.getAttribute('data-was-playing-on-tab-leave') === 'true') {
+          videoEl.setAttribute('data-was-playing-on-tab-leave', false)
+          videoEl.play()
+        }
+      }
+    }
+
+    if (videoEl.getAttribute('data-disable-pause-on-tab-leave') === null) {
+      document.addEventListener(
+        'visibilitychange',
+        onVisibilityChangeCallback,
+        false
+      )
     }
 
     videoEl.addEventListener('play', this.onVideoElPlay)
