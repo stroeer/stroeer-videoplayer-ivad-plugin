@@ -148,7 +148,9 @@ function CreateIframe (url, currentAd, stroeervideoplayer, vastparser, opts, omi
         videoEl.load()
         svp.setSrc(vastparser._originalVideoSource)
         svp.loadStreamSource()
-        svp.getHls().startLoad()
+        if (svp.getHls() !== null) {
+          svp.getHls().startLoad()
+        }
         videoEl.load()
         // this seems to fix a bug in safari,
         // where the video is not playing correctly after the ad is finished
