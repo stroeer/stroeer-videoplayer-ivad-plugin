@@ -368,25 +368,12 @@ class VASTParser {
           svp.deinitUI('ivad')
           svp.initUI(this._originalUIName)
           svp.setContentVideo()
-          this.videoEl.removeAttribute('src')
-          this.videoEl.load()
           svp.setSrc(this._originalVideoSource)
           svp.loadStreamSource()
           if (svp.getHls() !== null) {
             svp.getHls().startLoad()
           }
-          this.videoEl.load()
-          // this seems to fix a bug in safari,
-          // where the video is not playing correctly after the ad is finished
-          // it just shows a black screen with audio
-          // eslint-disable-next-line
-          this.videoEl.play().then(
-            () => {
-              this.videoEl.pause()
-              // eslint-disable-next-line
-              this.videoEl.play()
-            }
-          )
+          void this.videoEl.play()
         }
         this.videoEl.addEventListener('ended', onEndedCleanup)
         if (mediaFiles[0].getAttribute('apiFramework') === 'VPAID') {
