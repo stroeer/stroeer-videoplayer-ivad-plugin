@@ -102,20 +102,7 @@ class VASTParser {
     this.trackingThirdQuartileURIs = []
     this.trackingUnmuteURIs = []
     this.videoEl = StroeerVideoplayer.getVideoEl()
-    const playerHls = StroeerVideoplayer.getHls()
-    if (playerHls !== null) {
-      if (playerHls.url !== null) {
-        this._originalVideoSource = playerHls.url
-      } else {
-        // workaround for ie11 and all the browsers that do not support currentSrc
-        // @ts-expect-error
-        this._originalVideoSource = this.videoEl.currentSrc ?? this.videoEl.querySelector('source').src
-      }
-    } else {
-      // workaround for ie11 and all the browsers that do not support currentSrc
-      // @ts-expect-error
-      this._originalVideoSource = this.videoEl.currentSrc ?? this.videoEl.querySelector('source').src
-    }
+    this._originalVideoSource = this.videoEl.dataset.src as string
     this._originalUIName = StroeerVideoplayer.getUIName()
     return this
   }
@@ -497,7 +484,8 @@ class VASTParser {
         this._VASTDocuments.push(xmldoc)
         this.parse(xmldoc)
       })
-      .catch(() => {
+      .catch((ex) => {
+        Logger.log('window.fetch', 'catch', ex)
         // this should only trigger when
         // a network error is encountered,
         // although this usually means permissions issues or similar.
